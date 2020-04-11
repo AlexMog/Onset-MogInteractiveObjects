@@ -17,7 +17,7 @@ end)
 --- @param fnc function A function that will be called with the player ID when the player interacts with the object
 --- @return boolean True if the object was correctly registered
 MogInteractiveObjects.RegisterInteractiveObject(objectId, fnc)
---- Unregister an interactive item
+--- Unregister an interactive object
 --- @param objectId number The ID of the object to unregister
 --- @return boolean False if the object was not registered as an interactive object
 MogInteractiveObjects.UnregisterInteractiveObject(objectId)

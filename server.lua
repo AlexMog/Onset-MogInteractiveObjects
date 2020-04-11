@@ -27,7 +27,7 @@ function RegisterInteractiveObject(objectId, fnc)
 end
 AddFunctionExport("RegisterInteractiveObject", RegisterInteractiveObject)
 
---- Unregister an interactive item
+--- Unregister an interactive object
 --- @param objectId number The ID of the object to unregister
 --- @return boolean False if the object was not registered as an interactive object
 function UnregisterInteractiveObject(objectId)
