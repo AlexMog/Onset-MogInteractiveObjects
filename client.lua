@@ -21,3 +21,4 @@ function PlayerLookRaycast(maxDistance)
     local finalPointZ = forwardZ * maxDistance + z
     return LineTrace(x + forwardX * 20, y + forwardY * 20, z, finalPointX, finalPointY, finalPointZ, false)
 end
+AddFunctionExport("PlayerLookRaycast", PlayerLookRaycast)
