@@ -12,7 +12,7 @@ AddRemoteEvent("moginteractiveobjects:interact", function(player, hitType, hitId
             local fncMap = rawget(interactiveFncs, hitType)
             if fncMap then
                 local fnc = rawget(fncMap, hitId)
-                fnc(player)
+                fnc(player, hitType, hitId)
             end
         end
     end
