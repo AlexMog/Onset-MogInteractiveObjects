@@ -6,7 +6,10 @@ local CHECK_METHODS = {}
 function OnKeyPress(key)
     if key == INTERACTION_KEY then
         local hitType, hitId = PlayerLookRaycast(300)
-        local checkFnc = rawget(CHECK_METHODS, hitType)
+        if hitType == 0 then
+            return
+        end
+        local checkFnc = CHECK_METHODS[hitType]
         if checkFnc and checkFnc(hitId) then
             CallRemoteEvent("moginteractiveobjects:interact", hitType, hitId)
         end
