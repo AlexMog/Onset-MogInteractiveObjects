@@ -8,7 +8,7 @@ local objectId = CreateObject(1408, x, y, z, h)
 MogInteractiveObjects.RegisterInteractiveObject(5, objectId)
 
 AddEvent("InteractiveObjectInteract", function(player, objectType, _objectId)
-    if objectId == _objectId then
+    if objectType == 5 and objectId == _objectId then
         AddPlayerChat(player, "Interacted with object "..objectId.." !")
     end
 end)
