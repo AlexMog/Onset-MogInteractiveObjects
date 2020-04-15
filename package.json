@@ -1,6 +1,6 @@
 {
     "author": "Alexandre M. - AlexMog",
-    "version": "1.0.0",
+    "version": "1.0.0a",
     "server_scripts": [
         "server.lua"
     ],

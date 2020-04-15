@@ -1,4 +1,4 @@
-local interactiveFncs = {}
+local interactiveObjects = {}
 local PROPERTY_NAME = "moginteractiveobjects:interactive"
 
 local HIT_TYPES = {}
@@ -9,11 +9,10 @@ AddRemoteEvent("moginteractiveobjects:interact", function(player, hitType, hitId
         local objX, objY, objZ = hitFncs.location(hitId)
         local playerX, playerY, playerZ = GetPlayerLocation(player)
         if GetDistance3D(objX, objY, objZ, playerX, playerY, playerZ) < 300 then
-            local fncMap = rawget(interactiveFncs, hitType)
-            if fncMap then
-                local fnc = rawget(fncMap, hitId)
-                if fnc then
-                    fnc(player, hitType, hitId)
+            local objMap = rawget(interactiveObjects, hitType)
+            if objMap then
+                if rawget(objMap, hitId) then
+                    CallEvent("InteractiveObjectInteract", player, hitType, hitId)
                 end
             end
         end
@@ -23,20 +22,19 @@ end)
 --- Registers an Object as a player interactive object
 --- @param objectType number Supported values: 2 (player), 3 (vehicle), 4 (npc), 5 (object), 8 (door)
 --- @param objectId number The ID of the object to set as interactive (depends on the objectType)
---- @param fnc function A function that will be called with the player ID when the player interacts with the object
 --- @return boolean True if the object was correctly registered
-function RegisterInteractiveObject(objectType, objectId, fnc)
+function RegisterInteractiveObject(objectType, objectId)
     local hitFncs = rawget(HIT_TYPES, objectType)
-    if hitFncs and hitFncs.check(objectId) then
+    if not hitFncs or not hitFncs.check(objectId) then
         return false
     end
     hitFncs.set(objectId, true)
-    local fncMap = rawget(interactiveFncs, objectType)
-    if not fncMap then
-        fncMap = {}
-        rawset(interactiveFncs, objectType, fncMap)
+    local objectsMap = rawget(interactiveObjects, objectType)
+    if not objectsMap then
+        objectsMap = {}
+        rawset(interactiveObjects, objectType, objectsMap)
     end
-    rawset(fncMap, objectId, fnc)
+    rawset(objectsMap, objectId, true)
     return true
 end
 AddFunctionExport("RegisterInteractiveObject", RegisterInteractiveObject)
@@ -46,12 +44,11 @@ AddFunctionExport("RegisterInteractiveObject", RegisterInteractiveObject)
 --- @param objectId number The ID of the object to unregister
 --- @return boolean False if the object was not registered as an interactive object
 function UnregisterInteractiveObject(objectType, objectId)
-    local fncMap = rawget(interactiveFncs, objectType)
-    if not fncMap then
+    local objectsMap = rawget(interactiveObjects, objectType)
+    if not objectsMap then
         return false
     end
-    local fnc = rawget(fncMap, objectId)
-    if not fnc then
+    if not rawget(objectsMap, objectId) then
         return false
     end
     local hitFncs = rawget(HIT_TYPES, objectType)
@@ -59,7 +56,7 @@ function UnregisterInteractiveObject(objectType, objectId)
         return false
     end
     hitFncs.set(objectId, nil)
-    rawset(fncMap, objectId, nil)
+    rawset(objectsMap, objectId, nil)
     return true
 end
 AddFunctionExport("UnregisterInteractiveObject", UnregisterInteractiveObject)

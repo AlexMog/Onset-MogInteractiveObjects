@@ -5,8 +5,12 @@ Create objects in your world and let them be interactive !
 ```lua
 local MogInteractiveObjects = ImportPackage("moginteractiveobjects")
 local objectId = CreateObject(1408, x, y, z, h)
-MogInteractiveObjects.RegisterInteractiveObject(5, objectId, function(player)
-    AddPlayerChat(player, "Interacted with object "..objectId.." !")
+MogInteractiveObjects.RegisterInteractiveObject(5, objectId)
+
+AddEvent("InteractiveObjectInteract", function(player, objectType, _objectId)
+    if objectId == _objectId then
+        AddPlayerChat(player, "Interacted with object "..objectId.." !")
+    end
 end)
 ```
 
@@ -15,9 +19,8 @@ end)
 --- Registers an Object as a player interactive object
 --- @param objectType number Supported values: 2 (player), 3 (vehicle), 4 (npc), 5 (object), 8 (door)
 --- @param objectId number The ID of the object to set as interactive (depends on the objectType)
---- @param fnc function A function that will be called with the player ID when the player interacts with the object
 --- @return boolean True if the object was correctly registered
-MogInteractiveObjects.RegisterInteractiveObject(objectType, objectId, fnc)
+MogInteractiveObjects.RegisterInteractiveObject(objectType, objectId)
 --- Unregister an interactive object
 --- @param objectType number Supported values: 2 (player), 3 (vehicle), 4 (npc), 5 (object), 8 (door)
 --- @param objectId number The ID of the object to unregister
